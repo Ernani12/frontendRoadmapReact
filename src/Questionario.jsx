@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css'; // Importe o arquivo de estilo
+import { useNavigate } from 'react-router-dom'; // Certifique-se de importar useNavigate
+
 
 const Formulario = () => {
   const [linguagens, setLinguagens] = useState([]);
   const [selectedId, setSelectedId] = useState(null); // Altere para armazenar o ID
   const [skills, setSkills] = useState([]);
+  const navigate = useNavigate(); // Hook para acessar a navegação
 
+  
   // Função para buscar as linguagens do backend
   useEffect(() => {
     const fetchLinguagens = async () => {
@@ -45,6 +49,11 @@ const Formulario = () => {
     setSelectedId(event.target.value); // Altere para armazenar o ID
   };
 
+  // Função para redirecionar para a página de habilidades
+  const handleViewSkills = () => {
+    navigate('/skills');
+  };
+   
   // Função para lidar com a mudança nos checkboxes de habilidades
   const handleSkillChange = (event) => {
     const { name, checked } = event.target;
@@ -105,11 +114,17 @@ const Formulario = () => {
             ))}
           </div>
         )}
+
         <div className="button-container">
           <button className="submit-button" type="submit">Enviar</button>
         </div>
       </form>
+          <div>
+          <button type="button" onClick={handleViewSkills}>Ver Todas as Habilidades</button>
+
+          </div>
     </div>
+    
   );
 };
 
