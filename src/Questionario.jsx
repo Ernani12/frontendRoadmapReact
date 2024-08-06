@@ -15,7 +15,7 @@ const Formulario = () => {
   useEffect(() => {
     const fetchLinguagens = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/linguagens/all');
+        const response = await axios.get('http://localhost:8080/api/cargos/all');
         setLinguagens(response.data);
       } catch (error) {
         console.error('Erro ao buscar linguagens:', error);
@@ -30,7 +30,7 @@ const Formulario = () => {
     const fetchSkills = async () => {
       if (selectedId) {
         try {
-          const response = await axios.get(`http://localhost:8080/api/linguagens/${selectedId}/skills`);
+          const response = await axios.get(`http://localhost:8080/api/cargos/${selectedId}/skills`);
           console.log('Habilidades recebidas:', response.data);
           setSkills(response.data);
         } catch (error) {
@@ -53,6 +53,12 @@ const Formulario = () => {
   const handleViewSkills = () => {
     navigate('/skills');
   };
+
+  
+  // Função para redirecionar para a página de habilidades
+  const handleViewCargos = () => {
+    navigate('/cargos');
+  };
    
   // Função para lidar com a mudança nos checkboxes de habilidades
   const handleSkillChange = (event) => {
@@ -67,7 +73,7 @@ const Formulario = () => {
     event.preventDefault();
     try {
       // Enviar a seleção de habilidades para o backend
-      await axios.post('http://localhost:8080/api/linguagens/selected', {
+      await axios.post('http://localhost:8080/api/cargos/selected', {
         id: selectedId, // Altere para enviar o ID
         skills: skills.filter(skill => skill.selected).map(skill => skill.nome),
       });
@@ -121,6 +127,7 @@ const Formulario = () => {
       </form>
           <div>
           <button type="button" onClick={handleViewSkills}>Ver Todas as Habilidades</button>
+          <button type="button" onClick={handleViewCargos}>Ver Todos os Cargos</button>
 
           </div>
     </div>

@@ -4,6 +4,7 @@ import './index.css'; // Importe o arquivo de estilo se necessário
 
 const CargosPage = () => {
   const [cargos, setCargos] = useState([]);
+  const [novoCargo, setNovoCargo] = useState(''); // Estado para o novo cargo
 
   useEffect(() => {
     const fetchCargos = async () => {
@@ -18,16 +19,49 @@ const CargosPage = () => {
     fetchCargos();
   }, []);
 
+  const handleAddCargo = async () => {
+    if (!novoCargo) {
+      alert('Por favor, insira um nome de cargo.');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8080/api/cargos/addc', { nome: novoCargo });
+      setCargos([...cargos, response.data]);
+      setNovoCargo(''); // Limpar o campo de entrada após adicionar
+    } catch (error) {
+      console.error('Erro ao adicionar cargo:', error);
+    }
+  };
+
   return (
     <div className="cargos-page">
       <h2>Todos os Cargos</h2>
-      <ul className="cargos-list">
-        {cargos.map((cargo) => (
-          <li key={cargo.id} className="cargo-item">
-            {cargo.nome}
-          </li>
-        ))}
-      </ul>
+      <div className="add-cargo-form">
+        <input
+          type="text"
+          value={novoCargo}
+          onChange={(e) => setNovoCargo(e.target.value)}
+          placeholder="Nome do Cargo"
+        />
+        <button onClick={handleAddCargo}>Adicionar Cargo</button>
+      </div>
+      <table className="cargos-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nome</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cargos.map((cargo) => (
+            <tr key={cargo.id} className="cargo-item">
+              <td>{cargo.id}</td>
+              <td>{cargo.nome}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

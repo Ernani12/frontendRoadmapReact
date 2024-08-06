@@ -44,6 +44,7 @@
     font-family: inherit;
     background-color: #1a1a1a;
     cursor: pointer;
+    margin-left: 20px;
     transition: border-color 0.25s;
   }
   button:hover {
@@ -110,7 +111,8 @@
   }
 
   .submit-button {
-    width: 50%;
+    width: 30%;
+    margin-top: 20px;
     margin-bottom: 20px;
     padding: 15px; /* Aumente o padding */
     background-color: #007bff;
@@ -155,3 +157,62 @@
   .cargo-item {
     margin-bottom: 5px; /* Espaço entre os itens */
   }
+
+
+  .cargos-page {
+    max-width: 500px; /* Aumente a largura máxima */
+    margin: 0 auto;
+    padding: 20px; /* Aumente o padding */
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #ffff00;
+    border-radius: 10px;
+    width: 800px;
+    text-align: left;
+  }
+
+
+  .cargos-page {
+    padding: 20px;
+  }
+  
+  .add-cargo-form {
+    margin-bottom: 20px;
+  }
+  
+  .add-cargo-form input {
+    padding: 5px;
+    margin-right: 10px;
+  }
+
+
+  .add-cargo-form input[type="text"] {
+    background-color: #ccc; /* Altere esta cor para a que você preferir */
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    color: #000000;
+    -webkit-text-stroke-color: #000000;
+  }
+  
+  .add-cargo-form button {
+    padding: 5px 10px;
+  }
+  
+  .cargos-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .cargos-table th,
+  .cargos-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .cargos-table th {
+    background-color: #f2f2f2;
+  }
+  
