@@ -7,6 +7,9 @@ import Register from './Register';
 import Login from './Login';
 import Questionnaire from './Questionario';
 import Roadmap from './Roadmap';
+import SkillsPage from './SkillsPage';
+import CargosPage from './CargosPage';
+
 import './App.css'
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/Questionario" element={<Questionnaire />} />
                 <Route path="/roadmap/:level" element={<Roadmap />} />
+                <Route path="/skills" element={<SkillsPage />} />
+                <Route path="/cargos" element={<CargosPage />} />
+
             </Routes>
         </Router>
     );

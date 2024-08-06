@@ -83,6 +83,7 @@
     text-align: center;
     margin-bottom: 20px; /* Aumente a margem inferior */
     font-size: 24px; /* Aumente o tamanho da fonte */
+    
   }
 
   .form-group {
@@ -110,6 +111,7 @@
 
   .submit-button {
     width: 50%;
+    margin-bottom: 20px;
     padding: 15px; /* Aumente o padding */
     background-color: #007bff;
     border: none;
@@ -122,4 +124,34 @@
 
   .submit-button:hover {
     background-color: #0056b3;
+  
+  }
+
+  .skill-page {
+    max-width: 500px; /* Aumente a largura máxima */
+    margin: 0 auto;
+    padding: 20px; /* Aumente o padding */
+    color: #000000;
+    background-color: #ffffff;
+    border: 1px solid #ffff00;
+    border-radius: 10px;
+    width: 800px;
+    
+  }
+
+  .skills-group {
+      text-align: left;
+  }
+
+  .cargos-page {
+    padding: 20px;
+  }
+  
+  .cargos-list {
+    list-style-type: disc; /* Bolinhas para os itens da lista */
+    margin-left: 20px;
+  }
+  
+  .cargo-item {
+    margin-bottom: 5px; /* Espaço entre os itens */
   }
