@@ -137,7 +137,7 @@
     background-color: #ffffff;
     border: 1px solid #ffff00;
     border-radius: 10px;
-    width: 800px;
+    width: 1000px;
     
   }
 
@@ -145,9 +145,7 @@
       text-align: left;
   }
 
-  .cargos-page {
-    padding: 20px;
-  }
+
   
   .cargos-list {
     list-style-type: disc; /* Bolinhas para os itens da lista */
@@ -161,13 +159,13 @@
 
   .cargos-page {
     max-width: 700px; /* Aumente a largura máxima */
-    margin: 0 auto;
-    padding: 20px; /* Aumente o padding */
+   
+    padding: 0px; /* Aumente o padding */
     color: #000000;
     background-color: #ffffff;
     border: 1px solid #ffff00;
     border-radius: 10px;
-    width: 800px;
+    width: 600px;
     text-align: left;
   }
 
@@ -176,10 +174,58 @@
     
   }
 
-
-
+/*curent skills*/
+  .current-skills {
+    padding: 10px;
+    margin-left: 300px;
+    margin-top: -460px;
+    border-radius: 8px;
+    display:block;
+  }
+  
+  .current-skills h3 {
+    
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  .current-skills table {
+    width: 60%;
+    
+  }
+  
+  .current-skills th, .current-skills td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .current-skills th {
+    background-color: #08c1ff;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .current-skills td {
+    background-color: #fff;
+  }
+  
+  .current-skills tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .current-skills tr:hover {
+    background-color: #e1f5fe;
+  }
+  
+  .current-skills table caption {
+    padding: 10px;
+    font-size: 1.2rem;
+    color: #555;
+  }
+  
   .cargos-page {
-    padding: 20px;
+    padding: 180px;
   }
   
   .add-cargo-form {
