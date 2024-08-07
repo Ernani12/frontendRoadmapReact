@@ -118,7 +118,7 @@ const CargosPage = () => {
                   <>
                     <button onClick={() => handleEditCargo(cargo)}>Editar</button>
                     <button onClick={() => handleDeleteCargo(cargo.id)}>Remover</button>
-                    <button style={{ width: '200px' }} onClick={() => handleAddSkills(cargo)}>Adicionar Skills</button>
+                    <button style={{ width: '100px' }} onClick={() => handleAddSkills(cargo)}>+ Skills</button>
 
 
                   </>
