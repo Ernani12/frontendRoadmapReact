@@ -160,7 +160,7 @@
 
 
   .cargos-page {
-    max-width: 500px; /* Aumente a largura máxima */
+    max-width: 700px; /* Aumente a largura máxima */
     margin: 0 auto;
     padding: 20px; /* Aumente o padding */
     color: #000000;
@@ -170,6 +170,12 @@
     width: 800px;
     text-align: left;
   }
+
+  .cargos-page button{
+    width: 100px;
+    
+  }
+
 
 
   .cargos-page {
@@ -197,7 +203,7 @@
   }
   
   .add-cargo-form button {
-    padding: 5px 10px;
+    padding: 5px 5px;
   }
   
   .cargos-table {

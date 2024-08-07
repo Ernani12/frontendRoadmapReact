@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './index.css'; // Importe o arquivo de estilo se necessário
+import { useNavigate } from 'react-router-dom'; // Certifique-se de importar useNavigate
+
 
 const CargosPage = () => {
   const [cargos, setCargos] = useState([]);
   const [novoCargo, setNovoCargo] = useState(''); // Estado para o novo cargo
   const [editCargoId, setEditCargoId] = useState(null); // ID do cargo sendo editado
   const [editCargoNome, setEditCargoNome] = useState(''); // Nome do cargo sendo editado
+  const navigate = useNavigate(); // Hook para acessar a navegação
 
   useEffect(() => {
     const fetchCargos = async () => {
@@ -48,6 +51,10 @@ const CargosPage = () => {
   const handleEditCargo = (cargo) => {
     setEditCargoId(cargo.id);
     setEditCargoNome(cargo.nome);
+  };
+
+  const handleAddSkills = (cargo) => {
+    navigate(`/add-skills/${cargo.id}`, { state: { cargo } });
   };
 
   const handleSaveEdit = async () => {
@@ -111,6 +118,9 @@ const CargosPage = () => {
                   <>
                     <button onClick={() => handleEditCargo(cargo)}>Editar</button>
                     <button onClick={() => handleDeleteCargo(cargo.id)}>Remover</button>
+                    <button style={{ width: '200px' }} onClick={() => handleAddSkills(cargo)}>Adicionar Skills</button>
+
+
                   </>
                 )}
               </td>
