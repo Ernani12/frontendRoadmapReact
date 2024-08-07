@@ -9,6 +9,7 @@ import Questionnaire from './Questionario';
 import Roadmap from './Roadmap';
 import SkillsPage from './SkillsPage';
 import CargosPage from './CargosPage';
+import AdicionarSkillsPage from './AdicionarSkills';
 
 import './App.css'
 
@@ -25,6 +26,7 @@ function App() {
                 <Route path="/roadmap/:level" element={<Roadmap />} />
                 <Route path="/skills" element={<SkillsPage />} />
                 <Route path="/cargos" element={<CargosPage />} />
+                <Route path="/add-skills/:cargoId" element={<AdicionarSkillsPage />} />
 
             </Routes>
         </Router>
