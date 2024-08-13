@@ -1,0 +1,68 @@
+body {
+    margin: 0;
+    background-color: #f8f8f8;
+  }
+  #container {
+    height: 120vh;
+    width: 800px;
+  }
+  input {
+    border: 1px solid rgb(203, 186, 186);
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: 700;
+    background: transparent;
+    height: 100%;
+    color: #222;
+  }
+  
+  input:focus {
+    border: none;
+    outline: none;
+    background: rgba(255, 255, 255, 0.25);
+    pointer-events: all;
+  }
+  button {
+    padding: 6px 8px;
+    border-radius: 5px;
+    border: none;
+    background-color: #008cba;
+    color: white;
+  }
+  button:hover {
+    background-color: rgb(69, 69, 229);
+  }
+  input[type="text"] {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .react-flow {
+    border: 3px solid #9999;
+    border-radius: 10px;
+  }
+  /* .react-flow_nodes {
+    color: #a02828;
+  } */
+  #two {
+    background-color: #4caf50;
+    margin: 5px;
+  }
+  #two:hover {
+    background-color: #63c266;
+  }
+  #three {
+    background-color: #f44336;
+    margin: 2px;
+  }
+  #three:hover {
+    background-color: rgb(190, 68, 68);
+  }
+  #four {
+    background-color: rgb(86, 86, 6);
+  }
+  #four:hover {
+    background-color: rgb(113, 113, 18);
+  }

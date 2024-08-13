@@ -3,14 +3,12 @@ import axios from 'axios';
 import './index.css'; // Importe o arquivo de estilo
 import { useNavigate } from 'react-router-dom'; // Certifique-se de importar useNavigate
 
-
 const Formulario = () => {
   const [linguagens, setLinguagens] = useState([]);
   const [selectedId, setSelectedId] = useState(null); // Altere para armazenar o ID
   const [skills, setSkills] = useState([]);
   const navigate = useNavigate(); // Hook para acessar a navegação
 
-  
   // Função para buscar as linguagens do backend
   useEffect(() => {
     const fetchLinguagens = async () => {
@@ -54,12 +52,11 @@ const Formulario = () => {
     navigate('/skills');
   };
 
-  
-  // Função para redirecionar para a página de habilidades
+  // Função para redirecionar para a página de cargos
   const handleViewCargos = () => {
     navigate('/cargos');
   };
-   
+
   // Função para lidar com a mudança nos checkboxes de habilidades
   const handleSkillChange = (event) => {
     const { name, checked } = event.target;
@@ -68,9 +65,11 @@ const Formulario = () => {
     ));
   };
 
-  // Função para enviar o formulário
+  // Função para enviar o formulário e redirecionar para a página MindMap
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const unselectedSkills = skills.filter(skill => !skill.selected);
+
     try {
       // Enviar a seleção de habilidades para o backend
       await axios.post('http://localhost:8080/api/cargos/selected', {
@@ -78,10 +77,22 @@ const Formulario = () => {
         skills: skills.filter(skill => skill.selected).map(skill => skill.nome),
       });
       alert('Habilidades enviadas com sucesso!');
+
     } catch (error) {
       console.error('Erro ao enviar habilidades:', error);
     }
   };
+
+    // Método para filtrar as habilidades não selecionadas
+    const getUnselectedSkills = () => {
+      return skills.filter(skill => !skill.selected);
+    };
+
+    // Novo método para navegar para a página MindMap com as habilidades não selecionadas
+    const navigateToMindMap = () => {
+      const unselectedSkills = getUnselectedSkills();
+      navigate('/mindmap', { state: { unselectedSkills } });
+    };
 
   return (
     <div className="questionario-form">
@@ -122,16 +133,14 @@ const Formulario = () => {
         )}
 
         <div className="button-container">
-          <button className="submit-button" type="submit">Enviar</button>
+          <button className="submit-button" type="submit" onClick={navigateToMindMap}>Criar mapa</button>
         </div>
       </form>
-          <div>
-          <button type="button" onClick={handleViewSkills}>Ver Todas as Habilidades</button>
-          <button type="button" onClick={handleViewCargos}>Ver Todos os Cargos</button>
-
-          </div>
+      <div>
+        <button type="button" onClick={handleViewSkills}>Ver Todas as Habilidades</button>
+        <button type="button" onClick={handleViewCargos}>Ver Todos os Cargos</button>
+      </div>
     </div>
-    
   );
 };
 

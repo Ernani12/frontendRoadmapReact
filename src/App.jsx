@@ -6,12 +6,14 @@ import { Navigate } from 'react-router-dom';
 import Register from './Register';
 import Login from './Login';
 import Questionnaire from './Questionario';
-import Roadmap from './Roadmap';
 import SkillsPage from './SkillsPage';
 import CargosPage from './CargosPage';
+import MindNode from './MindNode';
+
 import AdicionarSkillsPage from './AdicionarSkills';
 
 import './App.css'
+
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,7 +25,8 @@ function App() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/Questionario" element={<Questionnaire />} />
-                <Route path="/roadmap/:level" element={<Roadmap />} />
+                <Route path="/mindmap" element={<MindNode />} />
+
                 <Route path="/skills" element={<SkillsPage />} />
                 <Route path="/cargos" element={<CargosPage />} />
                 <Route path="/add-skills/:cargoId" element={<AdicionarSkillsPage />} />
