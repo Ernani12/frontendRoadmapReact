@@ -1,16 +1,15 @@
 import React, { useState, useCallback, useEffect } from "react";
 import ReactFlow, {
-  MiniMap,
   Controls,
   useNodesState,
   useEdgesState,
   addEdge,
-  Background,
   applyEdgeChanges,
 } from "reactflow";
 import { useLocation } from "react-router-dom";
 import "reactflow/dist/style.css";
 import "./map.css";
+import { v4 as uuidv4 } from 'uuid'; // Importar UUID para gerar IDs únicos
 
 // Função para mapear cores de acordo com o nível
 const getColorByLevel = (level) => {
@@ -38,7 +37,14 @@ export const loadMindMap = () => {
   return data ? JSON.parse(data) : null;
 };
 
-const initialNodes = [];
+const initialNodes = [
+  {
+    id: "1",
+    data: { label: "Início" },
+    position: { x: 250, y: 5 },
+    style: { border: "5px solid black" },
+  },
+];
 const initialEdges = [];
 
 export default function MindNode() {
@@ -48,27 +54,41 @@ export default function MindNode() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [name, setName] = useState("");
-  const [selectedEdge, setSelectedEdge] = useState(null);
+  const [selectedNode, setSelectedNode] = useState(null);
 
   useEffect(() => {
     if (unselectedSkills.length > 0) {
-      const skillNodes = unselectedSkills.map((skill, index) => ({
-        id: (index + 2).toString(),
-        data: { label: skill.nome },
-        position: {
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-        },
-        style: { border: `5px solid ${getColorByLevel(skill.level)}` }, // Definindo a cor da borda
-      }));
-      setNodes((nodes) => nodes.concat(skillNodes));
+      const existingNodeIds = nodes.map(node => node.id);
+      const existingEdgeIds = edges.map(edge => edge.id);
+  
+      const newNodes = unselectedSkills
+        .filter(skill => !existingNodeIds.includes(skill.id)) // Adicione uma propriedade `id` em skills
+        .map((skill, index) => ({
+          id: uuidv4(), // Usar UUID para IDs únicos
+          data: { label: skill.nome },
+          position: {
+            x: 250 + index * 200,
+            y: 100 + index * 100,
+          },
+          style: { border: `5px solid ${getColorByLevel(skill.level)}` },
+        }));
+  
+      const newEdges = newNodes.map((node, index) => ({
+        id: uuidv4(), // Usar UUID para IDs únicos
+        source: index === 0 ? "1" : newNodes[index - 1].id,
+        target: node.id,
+        type: "smoothstep",
+      })).filter(edge => !existingEdgeIds.includes(edge.id));
+  
+      setNodes((nodes) => [...nodes, ...newNodes]);
+      setEdges((edges) => [...edges, ...newEdges]);
     }
   }, [unselectedSkills]);
 
   const addNode = () => {
     setNodes((e) =>
       e.concat({
-        id: (e.length + 1).toString(),
+        id: uuidv4(), // Usar UUID para IDs únicos
         data: { label: `${name}` },
         position: {
           x: Math.random() * window.innerWidth,
@@ -86,11 +106,35 @@ export default function MindNode() {
 
   const onEdgesChangeWithSelection = useCallback(
     (changes) => {
-      const change = changes.find((c) => c.type === "select");
-      if (change && change.selected) {
-        setSelectedEdge(change);
-      }
-      setEdges((eds) => applyEdgeChanges(changes, eds));
+      setEdges((eds) =>
+        applyEdgeChanges(changes, eds).map((edge) => {
+          const isSelected = edge.className === "selected";
+          return {
+            ...edge,
+            className: isSelected ? "selected" : "",
+          };
+        })
+      );
+    },
+    [setEdges]
+  );
+
+  const onNodeClick = useCallback(
+    (event, node) => {
+      setSelectedNode(node);
+    },
+    []
+  );
+
+  const onEdgeClick = useCallback(
+    (event, edge) => {
+      setSelectedNode(null); // Desmarcar nó selecionado ao clicar em um edge
+      setEdges((eds) =>
+        eds.map((e) => ({
+          ...e,
+          className: e.id === edge.id ? "selected" : "",
+        }))
+      );
     },
     [setEdges]
   );
@@ -113,11 +157,24 @@ export default function MindNode() {
     window.location.reload();
   };
 
+  const deleteNodeAndEdges = () => {
+    if (selectedNode) {
+      // Remover o nó selecionado
+      setNodes((nodes) => nodes.filter((node) => node.id !== selectedNode.id));
+      
+      // Remover arestas conectadas ao nó selecionado
+      setEdges((edges) => edges.filter(
+        (edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id
+      ));
+      
+      setSelectedNode(null);
+    }
+  };
+
   useEffect(() => {
     const handleDelete = (event) => {
-      if (event.key === "Delete" && selectedEdge) {
-        setEdges((eds) => eds.filter((edge) => edge.id !== selectedEdge.id));
-        setSelectedEdge(null);
+      if (event.key === "Delete" && selectedNode) {
+        deleteNodeAndEdges();
       }
     };
 
@@ -125,14 +182,14 @@ export default function MindNode() {
     return () => {
       document.removeEventListener("keydown", handleDelete);
     };
-  }, [selectedEdge]);
+  }, [selectedNode]);
 
   const connectionLineStyle = {
     stroke: "#9999",
     strokeWidth: 3,
   };
 
-  const defaultEdgeOptions = { style: connectionLineStyle, type: "mindmap" };
+  const defaultEdgeOptions = { style: connectionLineStyle, type: "smoothstep" };
 
   return (
     <div className="fundo">
@@ -142,6 +199,8 @@ export default function MindNode() {
           edges={edges}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChangeWithSelection}
+          onEdgeClick={onEdgeClick}
+          onNodeClick={onNodeClick}
           connectionLineStyle={connectionLineStyle}
           defaultEdgeOptions={defaultEdgeOptions}
           onConnect={onConnect}
@@ -167,6 +226,9 @@ export default function MindNode() {
           </button>
           <button id="four" onClick={refreshPage}>
             Refresh
+          </button>
+          <button id="five" onClick={deleteNodeAndEdges}>
+            Delete Selected Node
           </button>
         </div>
       </div>
