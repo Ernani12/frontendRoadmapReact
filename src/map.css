@@ -81,7 +81,7 @@ input[type="text"] {
 
 /* Estilo para os nós (nodos) */
 .react-flow__node {
-  border-radius: 15px; /* Borda redonda */
+  border-radius: 30px; /* Borda redonda */
   border: 2px solid #0011ff; /* Borda sólida azul */
   background-color: hsl(0, 0%, 100%);
   padding: 10px;

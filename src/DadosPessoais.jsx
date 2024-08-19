@@ -63,7 +63,8 @@
                 <option value="">Selecione um cargo</option>
                 {cargos.map((cargo) => (
                 <option key={cargo.id} value={cargo.nome}>
-                    {cargo.nome}
+                 
+                 
                 </option>
                 ))}
             </select>

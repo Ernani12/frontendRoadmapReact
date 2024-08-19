@@ -27,6 +27,7 @@ const getColorByLevel = (level) => {
   }
 };
 
+// Funções para salvar e carregar o Mind Map no Local Storage
 export const saveMindMap = (nodes, edges) => {
   const data = { nodes, edges };
   localStorage.setItem("mindMapData", JSON.stringify(data));
@@ -55,12 +56,13 @@ export default function MindNode() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [name, setName] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
+  const [selectedEdge, setSelectedEdge] = useState(null); // Adicionar estado para o edge selecionado
 
   useEffect(() => {
     if (unselectedSkills.length > 0) {
       const existingNodeIds = nodes.map(node => node.id);
       const existingEdgeIds = edges.map(edge => edge.id);
-  
+
       const newNodes = unselectedSkills
         .filter(skill => !existingNodeIds.includes(skill.id)) // Adicione uma propriedade `id` em skills
         .map((skill, index) => ({
@@ -72,14 +74,14 @@ export default function MindNode() {
           },
           style: { border: `5px solid ${getColorByLevel(skill.level)}` },
         }));
-  
+
       const newEdges = newNodes.map((node, index) => ({
         id: uuidv4(), // Usar UUID para IDs únicos
         source: index === 0 ? "1" : newNodes[index - 1].id,
         target: node.id,
         type: "smoothstep",
       })).filter(edge => !existingEdgeIds.includes(edge.id));
-  
+
       setNodes((nodes) => [...nodes, ...newNodes]);
       setEdges((edges) => [...edges, ...newEdges]);
     }
@@ -108,7 +110,7 @@ export default function MindNode() {
     (changes) => {
       setEdges((eds) =>
         applyEdgeChanges(changes, eds).map((edge) => {
-          const isSelected = edge.className === "selected";
+          const isSelected = edge.id === selectedEdge?.id;
           return {
             ...edge,
             className: isSelected ? "selected" : "",
@@ -116,12 +118,13 @@ export default function MindNode() {
         })
       );
     },
-    [setEdges]
+    [setEdges, selectedEdge]
   );
 
   const onNodeClick = useCallback(
     (event, node) => {
       setSelectedNode(node);
+      setSelectedEdge(null); // Desmarcar aresta selecionada ao clicar em um nó
     },
     []
   );
@@ -129,14 +132,9 @@ export default function MindNode() {
   const onEdgeClick = useCallback(
     (event, edge) => {
       setSelectedNode(null); // Desmarcar nó selecionado ao clicar em um edge
-      setEdges((eds) =>
-        eds.map((e) => ({
-          ...e,
-          className: e.id === edge.id ? "selected" : "",
-        }))
-      );
+      setSelectedEdge(edge); // Atualizar o estado do edge selecionado
     },
-    [setEdges]
+    []
   );
 
   const handleSaveClick = () => {
@@ -168,13 +166,19 @@ export default function MindNode() {
       ));
       
       setSelectedNode(null);
+      setSelectedEdge(null); // Limpar seleção de edge ao remover nó
     }
   };
 
   useEffect(() => {
     const handleDelete = (event) => {
-      if (event.key === "Delete" && selectedNode) {
-        deleteNodeAndEdges();
+      if (event.key === "Delete" && (selectedNode || selectedEdge)) {
+        if (selectedNode) {
+          deleteNodeAndEdges();
+        } else if (selectedEdge) {
+          setEdges((edges) => edges.filter(edge => edge.id !== selectedEdge.id));
+          setSelectedEdge(null); // Limpar seleção de edge após a exclusão
+        }
       }
     };
 
@@ -182,7 +186,7 @@ export default function MindNode() {
     return () => {
       document.removeEventListener("keydown", handleDelete);
     };
-  }, [selectedNode]);
+  }, [selectedNode, selectedEdge]);
 
   const connectionLineStyle = {
     stroke: "#9999",
