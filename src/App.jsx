@@ -10,9 +10,11 @@ import SkillsPage from './SkillsPage';
 import CargosPage from './CargosPage';
 import MindNode from './MindNode';
 
+
 import AdicionarSkillsPage from './AdicionarSkills';
 
 import './App.css'
+import DadosPessoais from './DadosPessoais';
 
 
 function App() {
@@ -21,12 +23,12 @@ function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Navigate to="/Questionario" />} />
+                <Route path="/" element={<Navigate to="/dadosp" />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/Questionario" element={<Questionnaire />} />
                 <Route path="/mindmap" element={<MindNode />} />
-
+                <Route path="/dadosp" element={<DadosPessoais />} />
                 <Route path="/skills" element={<SkillsPage />} />
                 <Route path="/cargos" element={<CargosPage />} />
                 <Route path="/add-skills/:cargoId" element={<AdicionarSkillsPage />} />
