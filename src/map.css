@@ -1,68 +1,99 @@
-body {
-    margin: 0;
-    background-color: #f8f8f8;
-  }
-  #container {
-    height: 120vh;
-    width: 800px;
-  }
-  input {
-    border: 1px solid rgb(203, 186, 186);
-    padding: 4px 8px;
-    border-radius: 5px;
-    font-weight: 700;
-    background: transparent;
-    height: 100%;
-    color: #222;
-  }
-  
-  input:focus {
-    border: none;
-    outline: none;
-    background: rgba(255, 255, 255, 0.25);
-    pointer-events: all;
-  }
-  button {
-    padding: 6px 8px;
-    border-radius: 5px;
-    border: none;
-    background-color: #008cba;
-    color: white;
-  }
-  button:hover {
-    background-color: rgb(69, 69, 229);
-  }
-  input[type="text"] {
-    padding: 8px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  
-  .react-flow {
-    border: 3px solid #9999;
-    border-radius: 10px;
-  }
-  /* .react-flow_nodes {
-    color: #a02828;
-  } */
-  #two {
-    background-color: #4caf50;
-    margin: 5px;
-  }
-  #two:hover {
-    background-color: #63c266;
-  }
-  #three {
-    background-color: #f44336;
-    margin: 2px;
-  }
-  #three:hover {
-    background-color: rgb(190, 68, 68);
-  }
-  #four {
-    background-color: rgb(86, 86, 6);
-  }
-  #four:hover {
-    background-color: rgb(113, 113, 18);
-  }
+.fundo {
+  margin: 0;
+  background-color: #f8f8f8;
+}
+
+#container1 {
+  height: 120vh;
+  width: 800px;
+}
+
+input {
+  border: 1px solid rgb(186, 191, 203);
+  padding: 4px 8px;
+  border-radius: 5px;
+  font-weight: 700;
+  background: transparent;
+  height: 100%;
+  color: #222;
+}
+
+input:focus {
+  border: none;
+  outline: none;
+  background: rgb(255, 0, 0);
+  pointer-events: all;
+}
+
+button {
+  padding: 6px 8px;
+  border-radius: 5px;
+  border: none;
+  background-color: #008cba;
+  color: white;
+}
+
+button:hover {
+  background-color: rgb(69, 69, 229);
+}
+
+input[type="text"] {
+  padding: 8px;
+  margin-right: 10px;
+  border: 1px solid #0068f9;
+  border-radius: 1px;
+}
+
+.react-flow {
+  border: 3px solid #99999999;
+  border-radius: 10px;
+}
+
+#two {
+  background-color: #4caf50;
+  margin: 5px;
+}
+
+#two:hover {
+  background-color: #63c266;
+}
+
+#three {
+  background-color: #f44336;
+  margin: 2px;
+}
+
+#three:hover {
+  background-color: rgb(190, 68, 68);
+}
+
+#four {
+  background-color: rgb(86, 86, 6);
+}
+
+#four:hover {
+  background-color: rgb(113, 113, 18);
+}
+
+/* Estilo para os nós (nodos) */
+.react-flow__node {
+  border-radius: 15px; /* Borda redonda */
+  border: 2px solid #0011ff; /* Borda sólida azul */
+  background-color: hsl(0, 0%, 100%);
+  padding: 10px;
+  text-align: center;
+  resize: both; /* Permite redimensionar */
+  overflow: hidden; /* Esconde o conteúdo que ultrapassa os limites */
+  border-color: #0011ff;
+}
+
+.react-flow__node:focus {
+  outline: none;
+  box-shadow: 5 5 50px rgba(0, 68, 255, 0.5); /* Sombra ao focar no nó */
+}
+
+/* Estilo para o nó selecionado */
+.react-flow__node.selected {
+  border: 2px solid red; /* Borda vermelha */
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Sombra vermelha */
+}
