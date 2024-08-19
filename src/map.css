@@ -81,13 +81,18 @@ input[type="text"] {
 
 /* Estilo para os nós (nodos) */
 .react-flow__node {
-  border-radius: 15px; /* Borda redonda */
+  border-radius: 80%; /* Torna o nó uma elipse */
   border: 2px solid #0011ff; /* Borda sólida azul */
   background-color: hsl(0, 0%, 100%);
-  padding: 10px;
+  padding: 20px;
   text-align: center;
   resize: both; /* Permite redimensionar */
   overflow: hidden; /* Esconde o conteúdo que ultrapassa os limites */
+  width: 160px; /* Largura fixa */
+  font-family: Arial, sans-serif; /* Fonte do texto */
+  font-size: 14px; /* Tamanho da fonte */
+  font-weight: bold; /* Peso da fonte */
+  color: #333; /* Cor do texto */
 }
 
 .react-flow__node:focus {

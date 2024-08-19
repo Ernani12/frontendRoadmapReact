@@ -9,9 +9,8 @@ import ReactFlow, {
 import { useLocation } from "react-router-dom";
 import "reactflow/dist/style.css";
 import "./map.css";
-import { v4 as uuidv4 } from 'uuid'; // Importar UUID para gerar IDs únicos
+import { v4 as uuidv4 } from 'uuid';
 
-// Função para mapear cores de acordo com o nível
 const getColorByLevel = (level) => {
   switch (level) {
     case "pouco":
@@ -23,7 +22,7 @@ const getColorByLevel = (level) => {
     case "experiente":
       return "green";
     default:
-      return "#9999"; // Cor padrão se o nível não for definido
+      return "#9999";
   }
 };
 
@@ -55,16 +54,17 @@ export default function MindNode() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [name, setName] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
+  const [selectedEdge, setSelectedEdge] = useState(null);
 
   useEffect(() => {
     if (unselectedSkills.length > 0) {
-      const existingNodeIds = nodes.map(node => node.id);
-      const existingEdgeIds = edges.map(edge => edge.id);
-  
+      const existingNodeIds = new Set(nodes.map(node => node.id));
+      const existingEdgeIds = new Set(edges.map(edge => edge.id));
+
       const newNodes = unselectedSkills
-        .filter(skill => !existingNodeIds.includes(skill.id)) // Adicione uma propriedade `id` em skills
+        .filter(skill => !existingNodeIds.has(skill.id))
         .map((skill, index) => ({
-          id: uuidv4(), // Usar UUID para IDs únicos
+          id: uuidv4(),
           data: { label: skill.nome },
           position: {
             x: 250 + index * 200,
@@ -72,43 +72,46 @@ export default function MindNode() {
           },
           style: { border: `5px solid ${getColorByLevel(skill.level)}` },
         }));
-  
+
       const newEdges = newNodes.map((node, index) => ({
-        id: uuidv4(), // Usar UUID para IDs únicos
+        id: uuidv4(),
         source: index === 0 ? "1" : newNodes[index - 1].id,
         target: node.id,
-        type: "smoothstep",
-      })).filter(edge => !existingEdgeIds.includes(edge.id));
-  
-      setNodes((nodes) => [...nodes, ...newNodes]);
-      setEdges((edges) => [...edges, ...newEdges]);
+        type: "step",
+      })).filter(edge => !existingEdgeIds.has(edge.id));
+
+      setNodes(nodes => [...nodes, ...newNodes]);
+      setEdges(edges => [...edges, ...newEdges]);
     }
   }, [unselectedSkills]);
 
   const addNode = () => {
-    setNodes((e) =>
-      e.concat({
-        id: uuidv4(), // Usar UUID para IDs únicos
-        data: { label: `${name}` },
+    const newNodeId = uuidv4();
+    setNodes(nodes => [
+      ...nodes,
+      {
+        id: newNodeId,
+        data: { label: name },
         position: {
           x: Math.random() * window.innerWidth,
           y: Math.random() * window.innerHeight,
         },
         style: { border: "10px solid #9999" },
-      })
-    );
+      }
+    ]);
+    setName(""); // Clear the input field after adding
   };
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) => setEdges(eds => addEdge(params, eds)),
     [setEdges]
   );
 
   const onEdgesChangeWithSelection = useCallback(
     (changes) => {
-      setEdges((eds) =>
-        applyEdgeChanges(changes, eds).map((edge) => {
-          const isSelected = edge.className === "selected";
+      setEdges(eds =>
+        applyEdgeChanges(changes, eds).map(edge => {
+          const isSelected = edge.id === selectedEdge?.id;
           return {
             ...edge,
             className: isSelected ? "selected" : "",
@@ -116,27 +119,23 @@ export default function MindNode() {
         })
       );
     },
-    [setEdges]
+    [setEdges, selectedEdge]
   );
 
   const onNodeClick = useCallback(
     (event, node) => {
       setSelectedNode(node);
+      setSelectedEdge(null);
     },
     []
   );
 
   const onEdgeClick = useCallback(
     (event, edge) => {
-      setSelectedNode(null); // Desmarcar nó selecionado ao clicar em um edge
-      setEdges((eds) =>
-        eds.map((e) => ({
-          ...e,
-          className: e.id === edge.id ? "selected" : "",
-        }))
-      );
+      setSelectedNode(null);
+      setSelectedEdge(edge);
     },
-    [setEdges]
+    []
   );
 
   const handleSaveClick = () => {
@@ -159,22 +158,24 @@ export default function MindNode() {
 
   const deleteNodeAndEdges = () => {
     if (selectedNode) {
-      // Remover o nó selecionado
-      setNodes((nodes) => nodes.filter((node) => node.id !== selectedNode.id));
-      
-      // Remover arestas conectadas ao nó selecionado
-      setEdges((edges) => edges.filter(
-        (edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id
+      setNodes(nodes => nodes.filter(node => node.id !== selectedNode.id));
+      setEdges(edges => edges.filter(
+        edge => edge.source !== selectedNode.id && edge.target !== selectedNode.id
       ));
-      
       setSelectedNode(null);
+      setSelectedEdge(null);
     }
   };
 
   useEffect(() => {
     const handleDelete = (event) => {
-      if (event.key === "Delete" && selectedNode) {
-        deleteNodeAndEdges();
+      if (event.key === "Delete" && (selectedNode || selectedEdge)) {
+        if (selectedNode) {
+          deleteNodeAndEdges();
+        } else if (selectedEdge) {
+          setEdges(edges => edges.filter(edge => edge.id !== selectedEdge.id));
+          setSelectedEdge(null);
+        }
       }
     };
 
@@ -182,7 +183,7 @@ export default function MindNode() {
     return () => {
       document.removeEventListener("keydown", handleDelete);
     };
-  }, [selectedNode]);
+  }, [selectedNode, selectedEdge]);
 
   const connectionLineStyle = {
     stroke: "#9999",
@@ -210,6 +211,7 @@ export default function MindNode() {
         <div>
           <input
             type="text"
+            value={name}
             onChange={(e) => setName(e.target.value)}
             name="title"
           />
