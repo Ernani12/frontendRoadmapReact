@@ -75,6 +75,10 @@ input[type="text"] {
   background-color: rgb(113, 113, 18);
 }
 
+/* map.css */
+
+/* map.css */
+
 /* Estilo para os nós (nodos) */
 .react-flow__node {
   border-radius: 15px; /* Borda redonda */
@@ -84,16 +88,15 @@ input[type="text"] {
   text-align: center;
   resize: both; /* Permite redimensionar */
   overflow: hidden; /* Esconde o conteúdo que ultrapassa os limites */
-  border-color: #0011ff;
 }
 
 .react-flow__node:focus {
-  outline: none;
-  box-shadow: 5 5 50px rgba(0, 68, 255, 0.5); /* Sombra ao focar no nó */
+  outline: none !important;
+  box-shadow: 5px 5px 50px rgba(0, 68, 255, 0.5) !important; /* Sombra ao focar no nó */
 }
 
-/* Estilo para o nó selecionado */
-.react-flow__node.selected {
-  border: 2px solid red; /* Borda vermelha */
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); /* Sombra vermelha */
+/* Estilo para os edges selecionados */
+.react-flow__edge.selected path {
+  stroke: red !important; /* Cor da borda do edge selecionado */
+  stroke-width: 3px !important; /* Espessura da borda */
 }
